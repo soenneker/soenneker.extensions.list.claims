@@ -15,12 +15,13 @@ public static class ListClaimsExtension
     /// Creates a <see cref="ClaimsPrincipal"/> from a collection of <see cref="Claim"/>s.
     /// </summary>
     /// <param name="claims">The claims to wrap into a principal.</param>
+    /// <param name="authenticationType"></param>
     /// <returns>
     /// A <see cref="ClaimsPrincipal"/> whose identity contains the provided claims.
     /// If <paramref name="claims"/> is empty, returns an empty <see cref="ClaimsPrincipal"/> (no identities).
     /// </returns>
     [Pure, MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ClaimsPrincipal ToClaimsPrincipal(this List<Claim> claims)
+    public static ClaimsPrincipal ToClaimsPrincipal(this List<Claim> claims, string authenticationType)
     {
         if (claims is null)
             throw new ArgumentNullException(nameof(claims));
@@ -28,6 +29,9 @@ public static class ListClaimsExtension
         if (claims.Count == 0)
             return new ClaimsPrincipal();
 
-        return new ClaimsPrincipal(new ClaimsIdentity(claims));
+        var identity = new ClaimsIdentity(claims, authenticationType: authenticationType);
+        var principal = new ClaimsPrincipal(identity);
+
+        return principal;
     }
 }
