@@ -1,3 +1,4 @@
+using AwesomeAssertions;
 using Soenneker.Tests.Unit;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -13,9 +14,9 @@ public sealed class ListClaimsExtensionTests : UnitTest
 
         ClaimsPrincipal principal = claims.ToClaimsPrincipal("TestAuthType");
 
-        Assert.NotNull(principal.Identity);
-        Assert.True(principal.Identity!.IsAuthenticated);
-        Assert.Contains(principal.Claims, c => c.Type == ClaimTypes.NameIdentifier && c.Value == "123");
+        principal.Identity.Should().NotBeNull();
+        principal.Identity!.IsAuthenticated.Should().BeTrue();
+        principal.Claims.Should().Contain(c => c.Type == ClaimTypes.NameIdentifier && c.Value == "123");
     }
 
     [Test]
@@ -25,8 +26,8 @@ public sealed class ListClaimsExtensionTests : UnitTest
 
         ClaimsPrincipal principal = claims.ToClaimsPrincipal("");
 
-        Assert.NotNull(principal.Identity);
-        Assert.False(principal.Identity!.IsAuthenticated);
+        principal.Identity.Should().NotBeNull();
+        principal.Identity!.IsAuthenticated.Should().BeFalse();
     }
 
     [Test]
@@ -36,8 +37,8 @@ public sealed class ListClaimsExtensionTests : UnitTest
 
         ClaimsPrincipal principal = claims.ToClaimsPrincipal("TestAuthType");
 
-        Assert.Null(principal.Identity);
-        Assert.Empty(principal.Identities);
-        Assert.Empty(principal.Claims);
+        principal.Identity.Should().BeNull();
+        principal.Identities.Should().BeEmpty();
+        principal.Claims.Should().BeEmpty();
     }
 }
