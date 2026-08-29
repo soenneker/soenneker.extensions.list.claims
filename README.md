@@ -4,10 +4,23 @@
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.extensions.list.claims/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.extensions.list.claims/actions/workflows/codeql.yml)
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Extensions.List.Claims
-### A collection of helpful List Claims extension methods.
+A collection of helpful List Claims extension methods.
 
 ## Installation
 
-```
+```bash
 dotnet add package Soenneker.Extensions.List.Claims
 ```
+
+## Quick start
+
+```csharp
+using Soenneker.Extensions.List.Claims;
+
+// Given an existing List<Claim> named claims:
+var result = claims.ToClaimsPrincipal(authenticationType);
+```
+
+## Common operations
+
+- `ToClaimsPrincipal()` - Creates a `ClaimsPrincipal` from a collection of `Claim`s. Returns a `ClaimsPrincipal` whose identity contains the provided claims. If `claims` is empty, returns an empty `ClaimsPrincipal` (no identities).
