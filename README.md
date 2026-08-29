@@ -4,7 +4,7 @@
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.extensions.list.claims/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.extensions.list.claims/actions/workflows/codeql.yml)
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Extensions.List.Claims
-Wraps a list of claims in a `ClaimsIdentity` and `ClaimsPrincipal`.
+Extension methods for turning claim lists into identities, principals, and other authentication-friendly representations.
 
 ## Installation
 
