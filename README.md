@@ -4,7 +4,7 @@
 [![](https://img.shields.io/github/actions/workflow/status/soenneker/soenneker.extensions.list.claims/codeql.yml?label=CodeQL&style=for-the-badge)](https://github.com/soenneker/soenneker.extensions.list.claims/actions/workflows/codeql.yml)
 
 # ![](https://user-images.githubusercontent.com/4441470/224455560-91ed3ee7-f510-4041-a8d2-3fc093025112.png) Soenneker.Extensions.List.Claims
-A collection of helpful List Claims extension methods.
+Wraps a list of claims in a `ClaimsIdentity` and `ClaimsPrincipal`.
 
 ## Installation
 
@@ -12,15 +12,19 @@ A collection of helpful List Claims extension methods.
 dotnet add package Soenneker.Extensions.List.Claims
 ```
 
-## Quick start
+## Usage
 
 ```csharp
 using Soenneker.Extensions.List.Claims;
 
-// Given an existing List<Claim> named claims:
-var result = claims.ToClaimsPrincipal(authenticationType);
+var claims = new List<Claim>
+{
+    new(ClaimTypes.NameIdentifier, "customer-123"),
+    new(ClaimTypes.Role, "admin")
+};
+
+ClaimsPrincipal principal = claims.ToClaimsPrincipal("Bearer");
+bool authenticated = principal.Identity!.IsAuthenticated; // true
 ```
 
-## Common operations
-
-- `ToClaimsPrincipal()` - Creates a `ClaimsPrincipal` from a collection of `Claim`s. Returns a `ClaimsPrincipal` whose identity contains the provided claims. If `claims` is empty, returns an empty `ClaimsPrincipal` (no identities).
+`authenticationType` is passed to `ClaimsIdentity`; a non-empty value is what makes `IsAuthenticated` true. An empty claim list returns a principal with no identities at all, regardless of the authentication type. A null list throws `ArgumentNullException`.
