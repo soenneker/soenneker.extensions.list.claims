@@ -24,7 +24,17 @@ var claims = new List<Claim>
 };
 
 ClaimsPrincipal principal = claims.ToClaimsPrincipal("Bearer");
-bool authenticated = principal.Identity!.IsAuthenticated; // true
 ```
 
-`authenticationType` is passed to `ClaimsIdentity`; a non-empty value is what makes `IsAuthenticated` true. An empty claim list returns a principal with no identities at all, regardless of the authentication type. A null list throws `ArgumentNullException`.
+`authenticationType` is passed directly to `ClaimsIdentity`. A nonempty value makes `principal.Identity.IsAuthenticated` return `true`; this is a .NET identity-state convention, not proof that a token, credential, issuer, or claim was validated.
+
+Only construct an authenticated principal from claims produced by a trusted authentication process. Calling this method on request-supplied claims with a label such as `"Bearer"` does not authenticate the caller and can create an authorization vulnerability.
+
+The resulting principal contains one identity when the list has at least one claim. An empty claim list returns a principal with no identities, regardless of `authenticationType`:
+
+```csharp
+ClaimsPrincipal empty = new List<Claim>().ToClaimsPrincipal("Bearer");
+bool hasIdentity = empty.Identity is not null; // false
+```
+
+A null list throws `ArgumentNullException`. The method does not deduplicate, normalize, filter, or validate claim types and values.
